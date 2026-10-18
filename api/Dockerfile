@@ -12,7 +12,9 @@ ENV NODE_ENV="production" \
     CHROME_PATH=/usr/bin/chromium \
     DEBIAN_FRONTEND=noninteractive
 
-LABEL org.opencontainers.image.source="https://github.com/steel-dev/steel-browser"
+LABEL org.opencontainers.image.source="https://github.com/YS-BW/steel-browser" \
+    org.opencontainers.image.licenses="Apache-2.0" \
+    org.opencontainers.image.description="Experimental Steel headful WebRTC fork"
 
 # Install dependencies
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
@@ -96,6 +98,9 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Chrome and ChromeDriver
+# Use HTTPS and retry transient package download failures.
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources && \
+    printf 'Acquire::Retries "3";\n' > /etc/apt/apt.conf.d/80-point-retries
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     wget \

@@ -1,3 +1,7 @@
+> **Experimental WebRTC fork:** Based on upstream `aspectrr/headful-support` at `08a2ddf`.
+> 修复记录、预构建镜像和无需克隆源码的启动方式见 [WebRTC 镜像使用说明](WEBRTC.md)。
+> Image: `ghcr.io/ys-bw/steel-browser-webrtc:webrtc` — this is an experimental fork, not an upstream release.
+
 <br />
 <p align="center">
 <a href="https://steel.dev">
