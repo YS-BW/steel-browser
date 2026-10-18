@@ -33,10 +33,10 @@ func CreatePeerConnection() (*webrtc.PeerConnection, *webrtc.TrackLocalStaticRTP
 	// localIP := getLocalIP()
 	// log.Println("Using local IP for ICE:", localIP)
 
-	// Create a MediaEngine and register VP8 codec
+	// Match the H.264 RTP stream produced by entrypoint.sh.
 	m := &webrtc.MediaEngine{}
 	if err := m.RegisterCodec(webrtc.RTPCodecParameters{
-		RTPCodecCapability: webrtc.RTPCodecCapability{MimeType: webrtc.MimeTypeVP8, ClockRate: 90000},
+		RTPCodecCapability: webrtc.RTPCodecCapability{MimeType: webrtc.MimeTypeH264, ClockRate: 90000, SDPFmtpLine: "level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f"},
 		PayloadType:        96,
 	}, webrtc.RTPCodecTypeVideo); err != nil {
 		return nil, nil, err
@@ -93,7 +93,9 @@ func CreatePeerConnection() (*webrtc.PeerConnection, *webrtc.TrackLocalStaticRTP
 
 	// Create a video track
 	videoTrack, err := webrtc.NewTrackLocalStaticRTP(webrtc.RTPCodecCapability{
-		MimeType: webrtc.MimeTypeVP8,
+		MimeType:    webrtc.MimeTypeH264,
+		ClockRate:   90000,
+		SDPFmtpLine: "level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f",
 	}, "video", "pion-video")
 	if err != nil {
 		peerConnection.Close()

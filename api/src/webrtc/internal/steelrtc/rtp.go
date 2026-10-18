@@ -11,7 +11,7 @@ import (
 	"github.com/pion/webrtc/v3"
 )
 
-func StartRTPListener(videoTracks []*webrtc.TrackLocalStaticRTP,
+func StartRTPListener(videoTracks *[]*webrtc.TrackLocalStaticRTP,
 	videoTrackLock *sync.RWMutex) {
 	log.Println("Starting RTP listener on port 5004...")
 
@@ -52,7 +52,7 @@ func StartRTPListener(videoTracks []*webrtc.TrackLocalStaticRTP,
 
 		// Forward RTP packet to all connected video tracks
 		videoTrackLock.RLock()
-		for _, track := range videoTracks {
+		for _, track := range *videoTracks {
 			if err := track.WriteRTP(packet); err != nil && err != io.ErrClosedPipe {
 				log.Println("Error writing RTP to track:", err)
 			}

@@ -69,7 +69,7 @@
       <h1>Interactive WebRTC Stream</h1>
       <div id="status" class="status disconnected">Disconnected</div>
 
-      <video autoplay playsinline muted style="display: block; width: 640px; height: auto"></video>
+      <video id="hiddenVideo" autoplay playsinline muted></video>
       <canvas id="videoCanvas"></canvas>
 
       <div class="controls">
@@ -143,6 +143,7 @@
       pc.ontrack = (event) => {
         console.log("Received track:", event.track);
         hiddenVideo.srcObject = event.streams[0];
+        hiddenVideo.play().catch((error) => console.error("Video playback failed:", error));
 
         hiddenVideo.addEventListener("loadedmetadata", () => {
           console.log("Video metadata loaded:", hiddenVideo.videoWidth, hiddenVideo.videoHeight);
@@ -208,22 +209,6 @@
         );
       });
 
-      canvas.addEventListener("click", (e) => {
-        e.preventDefault();
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        const x = Math.floor((e.clientX - rect.left) * scaleX);
-        const y = Math.floor((e.clientY - rect.top) * scaleY);
-
-        ws.send(
-          JSON.stringify({
-            type: "mouse",
-            data: { x, y, button: "left", action: "click" },
-          }),
-        );
-      });
-
       canvas.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
@@ -243,6 +228,7 @@
       // Mouse down/up for drag operations
       canvas.addEventListener("mousedown", (e) => {
         e.preventDefault();
+        canvas.focus({ preventScroll: true });
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
@@ -365,17 +351,6 @@
           );
           e.target.value = ""; // Clear input
         }
-      });
-
-      // Global keyboard capture when video is focused
-      canvas.addEventListener("keydown", (e) => {
-        e.preventDefault();
-        ws.send(
-          JSON.stringify({
-            type: "keyboard",
-            data: { key: e.key, action: "down" },
-          }),
-        );
       });
 
       // Clipboard functions

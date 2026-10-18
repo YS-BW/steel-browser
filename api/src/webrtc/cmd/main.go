@@ -51,7 +51,7 @@ func main() {
 
 	// Start RTP listener for ffmpeg stream
 	go func() {
-		steelrtc.StartRTPListener(videoTracks, &videoTrackLock)
+		steelrtc.StartRTPListener(&videoTracks, &videoTrackLock)
 	}()
 
 	// --- HTTP server with graceful shutdown ---
