@@ -1,6 +1,6 @@
 services:
   steel-webrtc:
-    image: ${STEEL_IMAGE:-ghcr.io/ys-bw/steel-browser-webrtc:webrtc}
+    image: ${STEEL_IMAGE:-ccr.ccs.tencentyun.com/ys-bw-steel/steel-browser-webrtc:webrtc}
     container_name: steel-webrtc
     shm_size: 512m
     mem_limit: 2g
