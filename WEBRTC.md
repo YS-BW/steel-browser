@@ -19,13 +19,13 @@ docker pull "$STEEL_IMAGE"
 docker run -d --name steel-webrtc \
   --memory=2g --cpus=3 --shm-size=512m \
   --tmpfs /recordings:size=256m \
-  -p 127.0.0.1:3100:3000 \
+  -p 127.0.0.1:3000:3000 \
   -p 127.0.0.1:3001:3001 \
   -p 127.0.0.1:9323:9223 \
   -p 127.0.0.1:10000-10010:10000-10010/udp \
   -e NODE_ENV=production \
   -e CHROME_HEADLESS=false \
-  -e DOMAIN=127.0.0.1:3100 \
+  -e DOMAIN=127.0.0.1:3000 \
   -e CDP_DOMAIN=127.0.0.1:9323 \
   -e EXTERNAL_IP=127.0.0.1 \
   -e 'ICE_SERVERS_JSON=[]' \
@@ -33,7 +33,7 @@ docker run -d --name steel-webrtc \
 ```
 
 - WebRTC 操作页：[http://127.0.0.1:3001/sessions/debug](http://127.0.0.1:3001/sessions/debug)。这是分支自带的 Go 播放器。
-- Steel API：[http://127.0.0.1:3100/v1](http://127.0.0.1:3100/v1)。
+- Steel API：[http://127.0.0.1:3000/v1](http://127.0.0.1:3000/v1)。
 - CDP：9323。UDP 10000–10010 是 RTC 媒体端口，不能只映射 HTTP 端口。
 - 以上参数用于浏览器和 Docker 在同一台机器的场景；端口只绑定本机。远程部署的信令地址、ICE/TURN、鉴权和网络策略需要单独配置和验证。
 - 当前 Node API 返回的旧 `debugUrl` 不等同于上述 RTC 页面；本镜像不包含独立的 5173 管理控制台。

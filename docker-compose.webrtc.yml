@@ -6,14 +6,14 @@ services:
     mem_limit: 2g
     cpus: 3
     ports:
-      - '127.0.0.1:3100:3000'
+      - '127.0.0.1:3000:3000'
       - '127.0.0.1:3001:3001'
       - '127.0.0.1:9323:9223'
       - '127.0.0.1:10000-10010:10000-10010/udp'
     environment:
       NODE_ENV: production
       CHROME_HEADLESS: 'false'
-      DOMAIN: 127.0.0.1:3100
+      DOMAIN: 127.0.0.1:3000
       CDP_DOMAIN: 127.0.0.1:9323
       EXTERNAL_IP: 127.0.0.1
       ICE_SERVERS_JSON: '[]'
